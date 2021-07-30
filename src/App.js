@@ -68,6 +68,10 @@ const App = () => {
       console.log(error)
     }
   }
+  const handleUpdate = async (updatedPost) => {
+    /// Tähän updateeminen että saa staten päivitettyä?
+    console.log(updatedPost)
+  }
   if (user === null) {
     return (
       <form onSubmit={handleLogin}>
@@ -115,7 +119,7 @@ const App = () => {
           <NewBlog handlePost={handlePost} />
         </Togglable>
         {blogs.map((blog) => (
-          <Blog key={blog.id} blog={blog} />
+          <Blog key={blog.id} blog={blog} updateBlog={handleUpdate} />
         ))}
       </div>
     )

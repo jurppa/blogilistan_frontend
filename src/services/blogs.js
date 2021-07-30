@@ -16,5 +16,11 @@ const postNew = (newBlog, token) => {
     .then((response) => console.log(response))
     .catch((error) => console.log(error))
 }
+const updateBlog = (newBlog) => {
+  axios
+    .put(`/api/blogs/${newBlog.id}`, newBlog)
+    .then((response) => console.log(response))
+    .catch((error) => console.log(error))
+}
 
-export default { getAll, postNew }
+export default { getAll, postNew, updateBlog }
