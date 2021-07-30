@@ -7,8 +7,6 @@ const getAll = () => {
   return request.then((response) => response.data)
 }
 const postNew = (newBlog, token) => {
-  console.log('post new serviceen tulee')
-  console.log('token: ', token)
   axios
     .post(baseUrl, newBlog, {
       headers: {

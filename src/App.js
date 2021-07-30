@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
+import Notification from './components/Notification'
+
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('')
@@ -11,6 +13,10 @@ const App = () => {
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
   const [token, setToken] = useState('')
+
+  const [notificationColor, setNotificationColor] = useState('green')
+
+  const [notification, setNotification] = useState('')
 
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs))
@@ -38,12 +44,17 @@ const App = () => {
       setPassword('')
       window.localStorage.setItem('loggedInUser', JSON.stringify(user))
     } catch (exception) {
-      alert('wrong login info')
+      setNotification(`wrong username or password`)
+      setNotificationColor('orange')
+      setTimeout(() => {
+        setNotificationColor('green')
+        setNotification(null)
+      }, 5000)
     }
   }
   const handlePost = async (event) => {
     event.preventDefault()
-    alert('handlepost')
+
     const newPost = {
       title: title,
 
@@ -51,11 +62,23 @@ const App = () => {
       url: url,
     }
 
-    await blogService.postNew(newPost, token)
+    try {
+      await blogService.postNew(newPost, token)
+
+      await blogService.getAll().then((blogs) => setBlogs(blogs))
+      setNotification(`Added blog ${newPost.title} `)
+      setTimeout(() => {
+        setNotification(null)
+      }, 5000)
+    } catch (error) {
+      console.log(error)
+    }
   }
   if (user === null) {
     return (
       <form onSubmit={handleLogin}>
+        <Notification notification={notification} color={notificationColor} />
+
         <div>
           username
           <input
@@ -80,6 +103,7 @@ const App = () => {
   } else {
     return (
       <div>
+        <Notification notification={notification} color={notificationColor} />
         <h2>blogs</h2>
         <h4>
           {user} logged in{' '}
@@ -103,9 +127,6 @@ const App = () => {
           <button type="submit">create</button>
         </form>
 
-        {title}
-        {author}
-        {url}
         {blogs.map((blog) => (
           <Blog key={blog.id} blog={blog} />
         ))}
