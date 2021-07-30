@@ -1,13 +1,17 @@
-const NewBlog = (props) => {
+const NewBlog = ({
+  handlePost,
+  handleTitleChange,
+  handleAuthorChange,
+  handleUrlChange,
+}) => {
   return (
     <div>
-      <h3>create new</h3>
-      <form onSubmit={props.handlePost}>
-        title <input onChange={props.title} />
+      <form onSubmit={handlePost}>
+        title <input onChange={handleTitleChange} />
         <br />
         author
-        <input onChange={props.author} /> <br />
-        url <input onChange={props.url} /> <br />
+        <input onChange={handleAuthorChange} /> <br />
+        url <input onChange={handleUrlChange} /> <br />
         <button type="submit">create</button>
       </form>
     </div>

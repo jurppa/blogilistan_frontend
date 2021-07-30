@@ -1,8 +1,11 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import Notification from './components/Notification'
+
+import NewBlog from './components/NewBlog'
+import Togglable from './components/Togglable'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -13,6 +16,7 @@ const App = () => {
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
   const [token, setToken] = useState('')
+  const blogFormRef = useRef()
 
   const [notificationColor, setNotificationColor] = useState('green')
 
@@ -53,6 +57,8 @@ const App = () => {
     }
   }
   const handlePost = async (event) => {
+    blogFormRef.current.toggleVisibility()
+
     event.preventDefault()
 
     const newPost = {
@@ -117,16 +123,14 @@ const App = () => {
           </button>
         </h4>
         <h3>create new</h3>
-        <form onSubmit={handlePost}>
-          title <input onChange={({ target }) => setTitle(target.value)} />
-          <br />
-          author
-          <input onChange={({ target }) => setAuthor(target.value)} /> <br />
-          url <input onChange={({ target }) => setUrl(target.value)} />
-          <br />
-          <button type="submit">create</button>
-        </form>
-
+        <Togglable buttonLabel="create new blog" ref={blogFormRef}>
+          <NewBlog
+            handlePost={handlePost}
+            handleUrlChange={({ target }) => setUrl(target.value)}
+            handleTitleChange={({ target }) => setTitle(target.value)}
+            handleAuthorChange={({ target }) => setAuthor(target.value)}
+          />
+        </Togglable>
         {blogs.map((blog) => (
           <Blog key={blog.id} blog={blog} />
         ))}
