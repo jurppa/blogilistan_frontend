@@ -1,39 +1,40 @@
-import React, { useState, useEffect } from "react";
-import Blog from "./components/Blog";
-import blogService from "./services/blogs";
-import loginService from "./services/login";
+import React, { useState, useEffect } from 'react'
+import Blog from './components/Blog'
+import blogService from './services/blogs'
+import loginService from './services/login'
 const App = () => {
-  const [blogs, setBlogs] = useState([]);
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [user, setUser] = useState(null);
+  const [blogs, setBlogs] = useState([])
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+  const [user, setUser] = useState(null)
   useEffect(() => {
-    blogService.getAll().then((blogs) => setBlogs(blogs));
-  }, []);
+    blogService.getAll().then((blogs) => setBlogs(blogs))
+  }, [])
   useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem("loggedInUser");
+    const loggedUserJSON = window.localStorage.getItem('loggedInUser')
     if (loggedUserJSON) {
-      const user = JSON.parse(loggedUserJSON);
+      const user = JSON.parse(loggedUserJSON)
 
-      setUser(user.username);
+      setUser(user.username)
     }
-  }, []);
+  }, [])
   const handleLogin = async (event) => {
-    event.preventDefault();
+    event.preventDefault()
 
     try {
       const user = await loginService.login({
         username,
         password,
-      });
-      setUser(user.username);
-      setUsername("");
-      setPassword("");
-      window.localStorage.setItem("loggedInUser", JSON.stringify(user));
+      })
+
+      setUser(user.username)
+      setUsername('')
+      setPassword('')
+      window.localStorage.setItem('loggedInUser', JSON.stringify(user))
     } catch (exception) {
-      alert("wrong login info");
+      alert('wrong login info')
     }
-  };
+  }
   if (user === null) {
     return (
       <form onSubmit={handleLogin}>
@@ -57,18 +58,18 @@ const App = () => {
         </div>
         <button type="submit">login</button>
       </form>
-    );
+    )
   } else {
     return (
       <div>
         <h2>blogs</h2>
 
         <h4>
-          {user} logged in{" "}
+          {user} logged in{' '}
           <button
             onClick={() => {
-              window.localStorage.removeItem("loggedInUser");
-              setUser(null);
+              window.localStorage.removeItem('loggedInUser')
+              setUser(null)
             }}
           >
             log out
@@ -78,7 +79,7 @@ const App = () => {
           <Blog key={blog.id} blog={blog} />
         ))}
       </div>
-    );
+    )
   }
-};
-export default App;
+}
+export default App
