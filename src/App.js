@@ -6,7 +6,6 @@ import Notification from './components/Notification'
 
 import NewBlog from './components/NewBlog'
 import Togglable from './components/Togglable'
-
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('')
@@ -46,7 +45,7 @@ const App = () => {
       setPassword('')
       window.localStorage.setItem('loggedInUser', JSON.stringify(user))
     } catch (exception) {
-      setNotification(`wrong username or password`)
+      setNotification('wrong username or password')
       setNotificationColor('orange')
       setTimeout(() => {
         setNotificationColor('green')

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-const Blog = ({ blog, handleUpdate, user, userId, deletePost }) => {
+const Blog = ({ blog, handleUpdate, userId, deletePost }) => {
   const [shown, setShown] = useState('')
 
   const fullInfo = {
@@ -74,4 +74,5 @@ const Blog = ({ blog, handleUpdate, user, userId, deletePost }) => {
     )
   }
 }
+
 export default Blog

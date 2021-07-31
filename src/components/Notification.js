@@ -1,6 +1,8 @@
-const Notification = (props) => {
+import React from 'react'
+import PropTypes from 'prop-types'
+const Notification = ({ color, notification }) => {
   const notificationStyle = {
-    color: props.color,
+    color: color,
 
     fontSize: 27,
     border: '1px solid black',
@@ -8,7 +10,11 @@ const Notification = (props) => {
     marginBottom: 40,
     borderRadius: 4,
   }
-  return <div style={notificationStyle}>{props.notification}</div>
+  return <div style={notificationStyle}>{notification}</div>
 }
+Notification.propTypes = {
+  color: PropTypes.string.isRequired,
+  notification: PropTypes.string.isRequired
 
+}
 export default Notification
