@@ -4,7 +4,7 @@ const NewBlog = (props) => {
   const [url, setUrl] = useState('')
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
-
+  console.log(props.user)
   const makeBlog = (event) => {
     event.preventDefault()
     const blogToAdd = {
@@ -12,6 +12,7 @@ const NewBlog = (props) => {
 
       author: author,
       url: url,
+      user: props.user,
     }
     props.handlePost(blogToAdd)
   }

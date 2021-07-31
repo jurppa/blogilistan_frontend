@@ -14,7 +14,7 @@ const App = () => {
   const [user, setUser] = useState(null)
   const [token, setToken] = useState('')
   const blogFormRef = useRef()
-
+  const [userId, setUserId] = useState('')
   const [notificationColor, setNotificationColor] = useState('green')
 
   const [notification, setNotification] = useState('')
@@ -29,6 +29,7 @@ const App = () => {
 
       setUser(user.username)
       setToken(user.token)
+      setUserId(user.id)
     }
   }, [])
   const handleLogin = async (event) => {
@@ -69,9 +70,18 @@ const App = () => {
     }
   }
   const handleUpdate = async (updatedPost) => {
-    /// Tähän updateeminen että saa staten päivitettyä?
-    console.log(updatedPost)
+    blogService.updateBlog(updatedPost)
+    await blogService.getAll().then((blogs) => setBlogs(blogs))
   }
+
+  const handleDelete = async (id) => {
+    if (window.confirm('delete blog?')) {
+      console.log('id to delete: ', id)
+      blogService.removeBlog(id, token)
+      await blogService.getAll().then((blogs) => setBlogs(blogs))
+    }
+  }
+
   if (user === null) {
     return (
       <form onSubmit={handleLogin}>
@@ -116,11 +126,20 @@ const App = () => {
         </h4>
         <h3>create new</h3>
         <Togglable buttonLabel="create new blog" ref={blogFormRef}>
-          <NewBlog handlePost={handlePost} />
+          <NewBlog handlePost={handlePost} user={user} />
         </Togglable>
-        {blogs.map((blog) => (
-          <Blog key={blog.id} blog={blog} updateBlog={handleUpdate} />
-        ))}
+        {blogs
+          .sort((a, b) => b.likes - a.likes)
+          .map((blog) => (
+            <Blog
+              key={blog.id}
+              blog={blog}
+              handleUpdate={handleUpdate}
+              user={user}
+              userId={userId}
+              deletePost={handleDelete}
+            />
+          ))}
       </div>
     )
   }

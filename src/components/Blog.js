@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
-import blogService from '../services/blogs'
 
-const Blog = ({ blog, handleUpdate }) => {
+const Blog = ({ blog, handleUpdate, user, userId, deletePost }) => {
   const [shown, setShown] = useState('')
 
   const fullInfo = {
@@ -16,10 +15,8 @@ const Blog = ({ blog, handleUpdate }) => {
       url: blog.url,
       likes: blog.likes + 1,
     }
-    // TODO Vaihda App.js ->
-    blogService.updateBlog(updatedBlog)
-    // Update tällä? ->
-    handleUpdate()
+
+    handleUpdate(updatedBlog)
   }
   if (shown === 'shown') {
     return (
@@ -28,7 +25,7 @@ const Blog = ({ blog, handleUpdate }) => {
         <br /> {blog.author} <br />
         {blog.url}
         <br />
-        {blog.likes}{' '}
+        {blog.likes} added by:
         <button
           onClick={() => {
             likeBlog(blog)
@@ -44,6 +41,19 @@ const Blog = ({ blog, handleUpdate }) => {
         >
           hide
         </button>
+        <div>
+          {userId === blog.user.id ? (
+            <button
+              onClick={() => {
+                deletePost(blog.id)
+              }}
+            >
+              remove
+            </button>
+          ) : (
+            ''
+          )}
+        </div>
       </div>
     )
 

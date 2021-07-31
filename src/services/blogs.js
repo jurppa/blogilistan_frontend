@@ -22,5 +22,15 @@ const updateBlog = (newBlog) => {
     .then((response) => console.log(response))
     .catch((error) => console.log(error))
 }
+const removeBlog = (id, token) => {
+  axios
+    .delete(`/api/blogs/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((response) => console.log(response))
+    .catch((error) => console.log(error))
+}
 
-export default { getAll, postNew, updateBlog }
+export default { getAll, postNew, updateBlog, removeBlog }
