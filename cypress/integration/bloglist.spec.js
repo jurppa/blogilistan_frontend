@@ -76,19 +76,53 @@ describe('Blog app', function() {
           cy.get('#like').click()
           
       })
-      it('A blog can be liked', function() {
+    
+    it('A blog can be removed by adding user', function() {
            
-        cy.get('#show').click()
-        cy.get('#title').type('cypress testi')
-        cy.get('#author').type('testihenkilö')
+      cy.get('#show').click()
+      cy.get('#title').type('cypress testi')
+      cy.get('#author').type('testihenkilö')
 
-        cy.get('#url').type('www.google.fi')
-        cy.get('#createpost').click()
-        cy.contains('cypress testi')
-        cy.reload()
-        cy.get('#view').click()
-        cy.get('#like').click()
-        
-    })
+      cy.get('#url').type('www.google.fi')
+      cy.get('#createpost').click()
+     
+      cy.reload()
+      cy.get('#view').click()
+      cy.get('#delete').click()
+      cy.should('not.contain', 'cypress testi')
+
+      
+  })
+
+  it('Blogs are arranged by amount of likes', function() {
+       
+    cy.get('#show').click()
+    cy.get('#title').type('cypress testi 1')
+    cy.get('#author').type('testihenkilö')
+
+    cy.get('#url').type('www.google.fi')
+    cy.get('#createpost').click()
+   
+    cy.reload()
+    cy.get('#show').click()
+
+    cy.get('#title').type('cypress testi 2')
+    cy.get('#author').type('testihenkilö 2')
+
+    cy.get('#url').type('www.google.com')
+    cy.get('#createpost').click()
+
+    cy.reload()
+
+    cy.get('#view').eq(1).click()
+    cy.get('#like').eq(1).click()
+    cy.reload()
+
+    cy.get('.blogdiv').contains('cypress testi 2').get('#view').click()
+    cy.get('.blogdiv').contains('cypress testi 2').get('#view').click()
+    cy.reload()
+    cy.get('.blogdiv').first().contains("cypress testi 2")
+    
+})
       })
   })

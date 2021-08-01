@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 
 const Blog = ({ blog, handleUpdate, userId, deletePost }) => {
+  console.log('userId: ', userId)
+
   const [shown, setShown] = useState('')
   console.dir(blog)
   const fullInfo = {
@@ -42,8 +44,8 @@ const Blog = ({ blog, handleUpdate, userId, deletePost }) => {
           hide
         </button>
         <div>
-          {userId === blog.user.id ? (
-            <button
+          {userId === blog.user.id.toString() ? (
+            <button id='delete'
               onClick={() => {
                 deletePost(blog.id)
               }}
@@ -59,7 +61,7 @@ const Blog = ({ blog, handleUpdate, userId, deletePost }) => {
     // else show
   } else {
     return (
-      <div>
+      <div className='blogdiv'>
         <hr />
 
         title:{blog.title}<br />
