@@ -25,7 +25,7 @@ const Blog = ({ blog, handleUpdate, userId, deletePost }) => {
         <br /> {blog.author} <br />
         {blog.url}
         <br />
-        {blog.likes} added by:
+        likes: {blog.likes}
         <button
           onClick={() => {
             likeBlog(blog)
@@ -56,13 +56,14 @@ const Blog = ({ blog, handleUpdate, userId, deletePost }) => {
         </div>
       </div>
     )
-
     // else show
   } else {
     return (
       <div>
-        {blog.title}
-        {blog.author}
+        <hr />
+
+        title:{blog.title}<br />
+        author:{blog.author}<br />
         <button
           onClick={() => {
             setShown('shown')
@@ -70,6 +71,7 @@ const Blog = ({ blog, handleUpdate, userId, deletePost }) => {
         >
           view
         </button>
+        <hr />
       </div>
     )
   }
