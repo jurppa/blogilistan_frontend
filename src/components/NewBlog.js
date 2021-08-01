@@ -25,9 +25,9 @@ const NewBlog = (props) => {
         author
         <input id='author' onChange={({ target }) => setAuthor(target.value)} /> <br />
         url <input id='url' onChange={({ target }) => setUrl(target.value)} /> <br />
-        <button type="submit">create</button>
+        <button id='createpost' type="submit">create</button>
       </form>
-      {author} {title} {url}
+
     </div>
   )
 }

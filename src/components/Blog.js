@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 
 const Blog = ({ blog, handleUpdate, userId, deletePost }) => {
   const [shown, setShown] = useState('')
-
+  console.dir(blog)
   const fullInfo = {
     border: '1px solid black',
     backgroundColor: 'beige',
@@ -26,7 +26,7 @@ const Blog = ({ blog, handleUpdate, userId, deletePost }) => {
         {blog.url}
         <br />
         likes: {blog.likes}
-        <button
+        <button id='like'
           onClick={() => {
             likeBlog(blog)
           }}
@@ -64,7 +64,7 @@ const Blog = ({ blog, handleUpdate, userId, deletePost }) => {
 
         title:{blog.title}<br />
         author:{blog.author}<br />
-        <button
+        <button id='view'
           onClick={() => {
             setShown('shown')
           }}

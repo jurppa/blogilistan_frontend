@@ -23,8 +23,10 @@ const App = () => {
   }, [])
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedInUser')
+
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
+      console.log('TOKEN: ', user.token)
 
       setUser(user.username)
       setToken(user.token)
@@ -39,8 +41,10 @@ const App = () => {
         username,
         password,
       })
-
       setUser(user.username)
+      console.log('token kirjautumisen jälkeen: ', user.token)
+
+      setToken(user.token)
       setUsername('')
       setPassword('')
       window.localStorage.setItem('loggedInUser', JSON.stringify(user))
@@ -59,7 +63,8 @@ const App = () => {
     try {
       blogService.postNew(newPost, token)
 
-      await blogService.getAll().then((blogs) => setBlogs(blogs))
+
+      blogService.getAll().then((blogs) => setBlogs(blogs))
       setNotification(`Added blog ${newPost.title} `)
       setTimeout(() => {
         setNotification(null)

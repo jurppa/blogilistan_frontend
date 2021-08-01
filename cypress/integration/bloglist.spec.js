@@ -44,4 +44,51 @@ describe('Blog app', function() {
             cy.contains('wrong username or password')
         })
       })
+      describe('When logged in', function() {
+        beforeEach(function() {
+            cy.get('#username').type('testaaja')
+            cy.get('#password').type('salasana')
+            cy.get('#loginbutton').click()
+       
+        })
+    
+        it('A blog can be created', function() {
+           
+            cy.get('#show').click()
+            cy.get('#title').type('cypress testi')
+            cy.get('#author').type('testihenkilö')
+
+            cy.get('#url').type('www.google.fi')
+            cy.get('#createpost').click()
+            cy.contains('cypress testi')
+        })
+        it('A blog can be liked', function() {
+           
+          cy.get('#show').click()
+          cy.get('#title').type('cypress testi')
+          cy.get('#author').type('testihenkilö')
+
+          cy.get('#url').type('www.google.fi')
+          cy.get('#createpost').click()
+          cy.contains('cypress testi')
+          cy.reload()
+          cy.get('#view').click()
+          cy.get('#like').click()
+          
+      })
+      it('A blog can be liked', function() {
+           
+        cy.get('#show').click()
+        cy.get('#title').type('cypress testi')
+        cy.get('#author').type('testihenkilö')
+
+        cy.get('#url').type('www.google.fi')
+        cy.get('#createpost').click()
+        cy.contains('cypress testi')
+        cy.reload()
+        cy.get('#view').click()
+        cy.get('#like').click()
+        
+    })
+      })
   })
