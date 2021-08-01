@@ -20,11 +20,11 @@ const NewBlog = (props) => {
   return (
     <div>
       <form onSubmit={makeBlog}>
-        title <input onChange={({ target }) => setTitle(target.value)} />
+        title <input id='title' onChange={({ target }) => setTitle(target.value)} />
         <br />
         author
-        <input onChange={({ target }) => setAuthor(target.value)} /> <br />
-        url <input onChange={({ target }) => setUrl(target.value)} /> <br />
+        <input id='author' onChange={({ target }) => setAuthor(target.value)} /> <br />
+        url <input id='url' onChange={({ target }) => setUrl(target.value)} /> <br />
         <button type="submit">create</button>
       </form>
       {author} {title} {url}

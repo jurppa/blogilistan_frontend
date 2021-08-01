@@ -2,7 +2,7 @@ import React from 'react'
 import '@testing-library/jest-dom/extend-expect'
 import { render, fireEvent } from '@testing-library/react'
 import Blog from './Blog'
-
+import NewBlog from './NewBlog'
 
 
 test('renders title, author and likes', () => {
@@ -71,4 +71,39 @@ test('if like is clicked twice call eventhandler twice', async () => {
 
 
   expect(mockHandler.mock.calls).toHaveLength(2)
+})
+
+
+test('<NoteForm /> updates parent state and calls onSubmit', () => {
+  const newBlog = jest.fn()
+
+  const component = render(
+    <NewBlog blog={newBlog} handlePost={newBlog}/>
+  )
+
+  const title = component.container.querySelector('#title')
+  const author = component.container.querySelector('#author')
+
+  const url = component.container.querySelector('#url')
+
+  const form = component.container.querySelector('form')
+
+  fireEvent.change(title, {
+    target: { value: 'testataan' }
+  })
+  fireEvent.change(author, {
+    target: { value: 'peksi' }
+  })
+  fireEvent.change(url, {
+    target: { value: 'www.google.fi' }
+  })
+
+  fireEvent.submit(form)
+
+  expect(newBlog.mock.calls).toHaveLength(1)
+  expect(newBlog.mock.calls[0][0].title).toBe('testataan' )
+  expect(newBlog.mock.calls[0][0].author).toBe('peksi' )
+
+  expect(newBlog.mock.calls[0][0].url).toBe( 'www.google.fi')
+
 })
