@@ -1,3 +1,5 @@
+import blogs from "../../src/services/blogs"
+
 describe('Blog app', function() {
     beforeEach(function() {
       cy.request('POST', 'http://localhost:3003/api/testing/reset')
@@ -106,7 +108,7 @@ describe('Blog app', function() {
     cy.reload()
     cy.get('#show').click()
 
-    cy.get('#title').type('cypress testi 2')
+    cy.get('#title').type('postaus 2')
     cy.get('#author').type('testihenkilö 2')
 
     cy.get('#url').type('www.google.com')
@@ -114,15 +116,17 @@ describe('Blog app', function() {
 
     cy.reload()
 
-    cy.get('#view').eq(1).click()
-    cy.get('#like').eq(1).click()
+    cy.get('#view').click()
+    cy.get('#like').click()
+
+    cy.get('#view').click()
+    cy.get('#like').click()
+
+
     cy.reload()
 
-    cy.get('.blogdiv').contains('cypress testi 2').get('#view').click()
-    cy.get('.blogdiv').contains('cypress testi 2').get('#view').click()
-    cy.reload()
-    cy.get('.blogdiv').first().contains("cypress testi 2")
-    
+
+    cy.get('.blogdiv').first().contains("cypress testi 1")
 })
       })
   })

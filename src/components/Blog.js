@@ -22,7 +22,7 @@ const Blog = ({ blog, handleUpdate, userId, deletePost }) => {
   }
   if (shown === 'shown') {
     return (
-      <div style={fullInfo}>
+      <div style={fullInfo} className="blogdiv">
         {blog.title}
         <br /> {blog.author} <br />
         {blog.url}
