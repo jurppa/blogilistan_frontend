@@ -1,6 +1,8 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 const Notification = ({ color, notification }) => {
+// Store
+
+  console.log('NOTIFICATION STATE', notification)
   const notificationStyle = {
     color: color,
 
@@ -12,9 +14,5 @@ const Notification = ({ color, notification }) => {
   }
   return <div style={notificationStyle}>{notification}</div>
 }
-Notification.propTypes = {
-  color: PropTypes.string.isRequired,
-  notification: PropTypes.string.isRequired
 
-}
 export default Notification

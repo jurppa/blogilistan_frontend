@@ -3,8 +3,9 @@ import React, { useState } from 'react'
 const Blog = ({ blog, handleUpdate, userId, deletePost }) => {
   console.log('userId: ', userId)
 
+
   const [shown, setShown] = useState('')
-  console.dir(blog)
+
   const fullInfo = {
     border: '1px solid black',
     backgroundColor: 'beige',

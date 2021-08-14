@@ -3,9 +3,13 @@ import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import Notification from './components/Notification'
-
+import notificationReducer from './reducers/notificationReducer'
+import { createStore } from 'redux'
 import NewBlog from './components/NewBlog'
 import Togglable from './components/Togglable'
+import { useDispatch } from 'react-redux'
+import { showNotification } from './reducers/notificationReducer'
+import { useSelector } from 'react-redux'
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('')
@@ -16,8 +20,11 @@ const App = () => {
   const [userId, setUserId] = useState('')
   const [notificationColor, setNotificationColor] = useState('green')
 
-  const [notification, setNotification] = useState('')
+  const store = createStore(notificationReducer)
+  const notification = useSelector(state => state.notifications)
+  console.log('APP NOTIFICATION', notification)
 
+  const dispatch = useDispatch()
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs))
   }, [])
@@ -49,11 +56,10 @@ const App = () => {
       setPassword('')
       window.localStorage.setItem('loggedInUser', JSON.stringify(user))
     } catch (exception) {
-      setNotification('wrong username or password')
+      dispatch(showNotification('asfjjasfjasfjf'))
       setNotificationColor('orange')
       setTimeout(() => {
         setNotificationColor('green')
-        setNotification(null)
       }, 5000)
     }
   }
@@ -65,9 +71,9 @@ const App = () => {
 
 
       blogService.getAll().then((blogs) => setBlogs(blogs))
-      setNotification(`Added blog ${newPost.title} `)
+      //setNotification(`Added blog ${newPost.title} `)
+      store.dispatch(showNotification('moi'))
       setTimeout(() => {
-        setNotification(null)
       }, 5000)
     } catch (error) {
       console.log(error)
@@ -89,7 +95,7 @@ const App = () => {
   if (user === null) {
     return (
       <form onSubmit={handleLogin}>
-        <Notification notification={notification} color={notificationColor} />
+        <Notification  color={notificationColor} />
 
         <div>
           username
@@ -115,7 +121,7 @@ const App = () => {
   } else {
     return (
       <div>
-        <Notification notification={notification} color={notificationColor} />
+        <Notification color={notificationColor} notification={notification} />
         <h2>blogs</h2>
         <h4>
           {user} logged in
