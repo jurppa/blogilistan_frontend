@@ -9,9 +9,9 @@ import Togglable from './components/Togglable'
 import { useDispatch } from 'react-redux'
 import { showNotification, hideNotification } from './reducers/notificationReducer'
 import { useSelector } from 'react-redux'
-import { initBlogs } from './reducers/blogReducer'
+import { addBlog, initBlogs } from './reducers/blogReducer'
 const App = () => {
-  const [blogs, setBlogs] = useState([])
+//  const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
@@ -19,12 +19,12 @@ const App = () => {
   const blogFormRef = useRef()
   const [userId, setUserId] = useState('')
   const [notificationColor, setNotificationColor] = useState('green')
-
+  const blogs = useSelector(state => state.blogs)
   const notification = useSelector(state => state.notifications)
-  console.log('APP NOTIFICATION', notification)
 
   const dispatch = useDispatch()
   useEffect(() => {
+    dispatch(initBlogs())
     //blogService.getAll().then((blogs) => setBlogs(blogs))
     // const blogs = useSelector(initBlogs())
     // JATKA TÄSTÄ BLOGIEN INIT ACTION..
@@ -69,10 +69,8 @@ const App = () => {
     blogFormRef.current.toggleVisibility()
 
     try {
-      blogService.postNew(newPost, token)
-
-
-      blogService.getAll().then((blogs) => setBlogs(blogs))
+      //blogService.postNew(newPost, token)
+      dispatch(addBlog(newPost, token))
       dispatch(showNotification('Created new blogpost'))
       setTimeout(() => {
         dispatch(hideNotification())
@@ -84,14 +82,14 @@ const App = () => {
   }
   const handleUpdate = async (updatedPost) => {
     blogService.updateBlog(updatedPost)
-    await blogService.getAll().then((blogs) => setBlogs(blogs))
+    //await blogService.getAll().then((blogs) => setBlogs(blogs))
   }
 
   const handleDelete = async (id) => {
     if (window.confirm('delete blog?')) {
       console.log('id to delete: ', id)
       blogService.removeBlog(id, token)
-      await blogService.getAll().then((blogs) => setBlogs(blogs))
+      //await blogService.getAll().then((blogs) => setBlogs(blogs))
     }
   }
 
@@ -142,7 +140,7 @@ const App = () => {
           <NewBlog handlePost={handlePost} user={user} />
         </Togglable>
         {blogs
-          .sort((a, b) => b.likes - a.likes)
+          // .sort((a, b) => b.likes - a.likes)
           .map((blog) => (
             <Blog
               key={blog.id}
