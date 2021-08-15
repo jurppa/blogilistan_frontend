@@ -1,6 +1,6 @@
 import axios from 'axios'
 const baseUrl = '/api/blogs'
-
+// TODO: ASYNCIKSI
 const getAll = () => {
   const request = axios.get(baseUrl)
   return request.then((response) => response.data)
@@ -16,9 +16,9 @@ const postNew = (newBlog, token) => {
     .catch((error) => console.log(error))
 }
 const updateBlog = (newBlog) => {
-  axios
+  return axios
     .put(`/api/blogs/${newBlog.id}`, newBlog)
-    .then((response) => console.log(response))
+    .then((response) => response)
     .catch((error) => console.log(error))
 }
 const removeBlog = (id, token) => {

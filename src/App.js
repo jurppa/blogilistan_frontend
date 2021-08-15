@@ -9,7 +9,7 @@ import Togglable from './components/Togglable'
 import { useDispatch } from 'react-redux'
 import { showNotification, hideNotification } from './reducers/notificationReducer'
 import { useSelector } from 'react-redux'
-import { addBlog, initBlogs } from './reducers/blogReducer'
+import { addBlog, initBlogs, likeBlog } from './reducers/blogReducer'
 const App = () => {
 //  const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('')
@@ -25,16 +25,12 @@ const App = () => {
   const dispatch = useDispatch()
   useEffect(() => {
     dispatch(initBlogs())
-    //blogService.getAll().then((blogs) => setBlogs(blogs))
-    // const blogs = useSelector(initBlogs())
-    // JATKA TÄSTÄ BLOGIEN INIT ACTION..
   }, [])
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedInUser')
 
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
-      console.log('TOKEN: ', user.token)
 
       setUser(user.username)
       setToken(user.token)
@@ -50,7 +46,6 @@ const App = () => {
         password,
       })
       setUser(user.username)
-      console.log('token kirjautumisen jälkeen: ', user.token)
 
       setToken(user.token)
       setUsername('')
@@ -80,9 +75,9 @@ const App = () => {
       console.log(error)
     }
   }
-  const handleUpdate = async (updatedPost) => {
-    blogService.updateBlog(updatedPost)
-    //await blogService.getAll().then((blogs) => setBlogs(blogs))
+  const handleUpdate = (updatedPost) => {
+
+    dispatch(likeBlog(updatedPost))
   }
 
   const handleDelete = async (id) => {
@@ -140,7 +135,7 @@ const App = () => {
           <NewBlog handlePost={handlePost} user={user} />
         </Togglable>
         {blogs
-          // .sort((a, b) => b.likes - a.likes)
+          .sort((a, b) => b.likes - a.likes)
           .map((blog) => (
             <Blog
               key={blog.id}

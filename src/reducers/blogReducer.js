@@ -7,10 +7,11 @@ const blogReducer = (state = [], action) => {
   case 'INIT':
 
     //INIT STATE
-    console.log(action.data)
     return action.data
   case 'ADD':
     return [...state, action.data]
+  case 'LIKE':
+    return state.map((a) => ( a.id === action.data.id ? action.data : a))
   default:
     return state
   }
@@ -25,6 +26,13 @@ export const addBlog = (blog, token) => {
     const newBlog = await blogService.postNew(blog, token)
     dispatch({ type: 'ADD', data: newBlog })
 
+  }
+
+}
+export const likeBlog = (blog) => {
+  return async (dispatch) => {
+    const likedBlog = await blogService.updateBlog(blog)
+    dispatch({ type: 'LIKE', data: likedBlog.data })
   }
 }
 export default blogReducer
