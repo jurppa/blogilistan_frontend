@@ -1,3 +1,5 @@
+
+
 const notificationReducer = (state = '', action) => {
 
   switch (action.type)
@@ -8,7 +10,7 @@ const notificationReducer = (state = '', action) => {
     console.log('SHOW CASE')
     return action.data
   case 'HIDE':
-    return 'HIDE'
+    return ''
   default:
     return state
   }
@@ -16,7 +18,10 @@ const notificationReducer = (state = '', action) => {
 export const showNotification = (notification) => {
   console.log('SHOW NOTIFICATION: ', notification)
   return  {
-    type:'SHOW', data: 'KOVAKOODATTU', notification  }
+    type:'SHOW', data:  notification  }
+}
+export const hideNotification = () => {
+  return { type: 'HIDE' }
 }
 
 

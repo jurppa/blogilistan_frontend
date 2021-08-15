@@ -3,13 +3,13 @@ import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import Notification from './components/Notification'
-import notificationReducer from './reducers/notificationReducer'
-import { createStore } from 'redux'
+
 import NewBlog from './components/NewBlog'
 import Togglable from './components/Togglable'
 import { useDispatch } from 'react-redux'
-import { showNotification } from './reducers/notificationReducer'
+import { showNotification, hideNotification } from './reducers/notificationReducer'
 import { useSelector } from 'react-redux'
+import { initBlogs } from './reducers/blogReducer'
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('')
@@ -20,13 +20,14 @@ const App = () => {
   const [userId, setUserId] = useState('')
   const [notificationColor, setNotificationColor] = useState('green')
 
-  const store = createStore(notificationReducer)
   const notification = useSelector(state => state.notifications)
   console.log('APP NOTIFICATION', notification)
 
   const dispatch = useDispatch()
   useEffect(() => {
-    blogService.getAll().then((blogs) => setBlogs(blogs))
+    //blogService.getAll().then((blogs) => setBlogs(blogs))
+    // const blogs = useSelector(initBlogs())
+    // JATKA TÄSTÄ BLOGIEN INIT ACTION..
   }, [])
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedInUser')
@@ -56,9 +57,10 @@ const App = () => {
       setPassword('')
       window.localStorage.setItem('loggedInUser', JSON.stringify(user))
     } catch (exception) {
-      dispatch(showNotification('asfjjasfjasfjf'))
+      dispatch(showNotification('wrong username or password'))
       setNotificationColor('orange')
       setTimeout(() => {
+        dispatch(hideNotification())
         setNotificationColor('green')
       }, 5000)
     }
@@ -71,9 +73,10 @@ const App = () => {
 
 
       blogService.getAll().then((blogs) => setBlogs(blogs))
-      //setNotification(`Added blog ${newPost.title} `)
-      store.dispatch(showNotification('moi'))
+      dispatch(showNotification('Created new blogpost'))
       setTimeout(() => {
+        dispatch(hideNotification())
+        setNotificationColor('green')
       }, 5000)
     } catch (error) {
       console.log(error)
@@ -95,7 +98,7 @@ const App = () => {
   if (user === null) {
     return (
       <form onSubmit={handleLogin}>
-        <Notification  color={notificationColor} />
+        <Notification  color={notificationColor} notification={notification}/>
 
         <div>
           username
