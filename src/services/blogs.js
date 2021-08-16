@@ -5,24 +5,29 @@ const getAll = () => {
   const request = axios.get(baseUrl)
   return request.then((response) => response.data)
 }
-const postNew = (newBlog, token) => {
-  axios
-    .post(baseUrl, newBlog, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-    .then((response) => console.log(response))
-    .catch((error) => console.log(error))
+const postNew = async (newBlog, token) => {
+
+  const data = await axios.post(baseUrl, newBlog, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  })
+  return data.data
 }
-const updateBlog = (newBlog) => {
-  return axios
+const updateBlog = async (newBlog) => {
+  const data = await axios
     .put(`/api/blogs/${newBlog.id}`, newBlog)
-    .then((response) => response)
-    .catch((error) => console.log(error))
+  console.log('update blog data', data)
+  return data.data
+  // return axios
+  //   .put(`/api/blogs/${newBlog.id}`, newBlog)
+  //   .then((response) => response)
+  //   .catch((error) => console.log(error))
+
+
 }
 const removeBlog = (id, token) => {
-  axios
+  const data =  axios
     .delete(`/api/blogs/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -30,6 +35,7 @@ const removeBlog = (id, token) => {
     })
     .then((response) => console.log(response))
     .catch((error) => console.log(error))
+  return data
 }
 
 export default { getAll, postNew, updateBlog, removeBlog }

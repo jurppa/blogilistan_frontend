@@ -1,5 +1,5 @@
 import blogService from '../services/blogs'
-
+import { showNotification } from './notificationReducer'
 const blogReducer = (state = [], action) => {
 
   switch(action.type)
@@ -11,7 +11,12 @@ const blogReducer = (state = [], action) => {
   case 'ADD':
     return [...state, action.data]
   case 'LIKE':
-    return state.map((a) => ( a.id === action.data.id ? action.data : a))
+    console.log('like state', action.data)
+    { const updt = state.map((a) => ( a.id === action.data.id ? action.data : a))
+      return updt }
+  case 'DELETE':
+
+    return state.filter((a) => ( a.id !== action.data.id))
   default:
     return state
   }
@@ -24,6 +29,7 @@ export const initBlogs = () => {
 export const addBlog = (blog, token) => {
   return async (dispatch) => {
     const newBlog = await blogService.postNew(blog, token)
+    console.dir('New blog', newBlog)
     dispatch({ type: 'ADD', data: newBlog })
 
   }
@@ -31,8 +37,20 @@ export const addBlog = (blog, token) => {
 }
 export const likeBlog = (blog) => {
   return async (dispatch) => {
-    const likedBlog = await blogService.updateBlog(blog)
-    dispatch({ type: 'LIKE', data: likedBlog.data })
+    const status = await blogService.updateBlog(blog)
+    console.log(status)
+    console.log(blog)
+
+    dispatch({ type: 'LIKE', data: blog })
   }
+}
+export const removeBlog = (id, token) => {
+  return async (dispatch) => {
+
+    await blogService.removeBlog(id, token)
+    dispatch({ type: 'DELETE', data: id })
+    dispatch(showNotification('deleted blog'))
+  }
+
 }
 export default blogReducer

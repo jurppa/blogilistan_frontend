@@ -1,17 +1,16 @@
 import React, { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
-import blogService from './services/blogs'
 import loginService from './services/login'
 import Notification from './components/Notification'
+
 
 import NewBlog from './components/NewBlog'
 import Togglable from './components/Togglable'
 import { useDispatch } from 'react-redux'
 import { showNotification, hideNotification } from './reducers/notificationReducer'
 import { useSelector } from 'react-redux'
-import { addBlog, initBlogs, likeBlog } from './reducers/blogReducer'
+import { addBlog, initBlogs, likeBlog, removeBlog } from './reducers/blogReducer'
 const App = () => {
-//  const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
@@ -25,7 +24,7 @@ const App = () => {
   const dispatch = useDispatch()
   useEffect(() => {
     dispatch(initBlogs())
-  }, [])
+  }, [dispatch])
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedInUser')
 
@@ -64,6 +63,7 @@ const App = () => {
     blogFormRef.current.toggleVisibility()
 
     try {
+
       //blogService.postNew(newPost, token)
       dispatch(addBlog(newPost, token))
       dispatch(showNotification('Created new blogpost'))
@@ -83,8 +83,7 @@ const App = () => {
   const handleDelete = async (id) => {
     if (window.confirm('delete blog?')) {
       console.log('id to delete: ', id)
-      blogService.removeBlog(id, token)
-      //await blogService.getAll().then((blogs) => setBlogs(blogs))
+      dispatch(removeBlog(id, token))
     }
   }
 
