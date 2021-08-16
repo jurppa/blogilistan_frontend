@@ -1,9 +1,7 @@
 import React, { useState } from 'react'
 
 const Blog = ({ blog, handleUpdate, userId, deletePost }) => {
-  console.log('userId: ', userId)
-
-
+  //
   const [shown, setShown] = useState('')
 
   const fullInfo = {
@@ -20,6 +18,7 @@ const Blog = ({ blog, handleUpdate, userId, deletePost }) => {
     }
 
     handleUpdate(updatedBlog)
+    setShown('')
   }
   if (shown === 'shown') {
     return (

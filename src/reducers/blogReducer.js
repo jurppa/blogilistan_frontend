@@ -11,12 +11,12 @@ const blogReducer = (state = [], action) => {
   case 'ADD':
     return [...state, action.data]
   case 'LIKE':
-    console.log('like state', action.data)
-    { const updt = state.map((a) => ( a.id === action.data.id ? action.data : a))
-      return updt }
+  { const findLiked = state.find(a => a.id === action.data.id)
+    const updt = { ...findLiked, likes: findLiked.likes++ }
+    return  state.map((a) => ( a.id === action.data ? updt : a)) }
   case 'DELETE':
 
-    return state.filter((a) => ( a.id !== action.data.id))
+    return state.filter((a) => ( a.id !== action.data))
   default:
     return state
   }

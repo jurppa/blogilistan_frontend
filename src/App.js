@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
 import loginService from './services/login'
 import Notification from './components/Notification'
-
+// Todo refaktoroi komponentteihin
 
 import NewBlog from './components/NewBlog'
 import Togglable from './components/Togglable'
@@ -24,7 +24,7 @@ const App = () => {
   const dispatch = useDispatch()
   useEffect(() => {
     dispatch(initBlogs())
-  }, [dispatch])
+  }, [])
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedInUser')
 
@@ -78,6 +78,8 @@ const App = () => {
   const handleUpdate = (updatedPost) => {
 
     dispatch(likeBlog(updatedPost))
+    dispatch(showNotification(`liked blog ${updatedPost.id}`))
+
   }
 
   const handleDelete = async (id) => {
