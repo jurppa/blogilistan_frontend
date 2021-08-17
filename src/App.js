@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
-import loginService from './services/login'
+//import loginService from './services/login'
 import Notification from './components/Notification'
 // Todo refaktoroi komponentteihin
 
@@ -10,16 +10,19 @@ import { useDispatch } from 'react-redux'
 import { showNotification, hideNotification } from './reducers/notificationReducer'
 import { useSelector } from 'react-redux'
 import { addBlog, initBlogs, likeBlog, removeBlog } from './reducers/blogReducer'
+import { loginUser } from './reducers/userReducer'
 const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const [user, setUser] = useState(null)
+  // const [user, setUser] = useState(null)
   const [token, setToken] = useState('')
   const blogFormRef = useRef()
   const [userId, setUserId] = useState('')
   const [notificationColor, setNotificationColor] = useState('green')
   const blogs = useSelector(state => state.blogs)
   const notification = useSelector(state => state.notifications)
+  const user = useSelector(state => state.users)
+  console.log('user state', user)
 
   const dispatch = useDispatch()
   useEffect(() => {
@@ -31,7 +34,7 @@ const App = () => {
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
 
-      setUser(user.username)
+      //setUser(user.username)
       setToken(user.token)
       setUserId(user.id)
     }
@@ -40,11 +43,12 @@ const App = () => {
     event.preventDefault()
 
     try {
-      const user = await loginService.login({
-        username,
-        password,
-      })
-      setUser(user.username)
+      // const user = await loginService.login({
+      //   username,
+      //   password,
+      // })
+      dispatch(loginUser({ username, password }))
+      //setUser(user.username)
 
       setToken(user.token)
       setUsername('')
@@ -125,7 +129,7 @@ const App = () => {
           <button
             onClick={() => {
               window.localStorage.removeItem('loggedInUser')
-              setUser(null)
+              //setUser(null)
             }}
           >
             log out
