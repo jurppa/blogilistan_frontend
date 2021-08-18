@@ -15,9 +15,9 @@ const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   // const [user, setUser] = useState(null)
-  const [token, setToken] = useState('')
+  //const [token, setToken] = useState('')
   const blogFormRef = useRef()
-  const [userId, setUserId] = useState('')
+  //const [userId, setUserId] = useState('')
   const [notificationColor, setNotificationColor] = useState('green')
   const blogs = useSelector(state => state.blogs)
   const notification = useSelector(state => state.notifications)
@@ -32,11 +32,12 @@ const App = () => {
     const loggedUserJSON = window.localStorage.getItem('loggedInUser')
 
     if (loggedUserJSON) {
-      const user = JSON.parse(loggedUserJSON)
+      //const user = JSON.parse(loggedUserJSON)
+
 
       //setUser(user.username)
-      setToken(user.token)
-      setUserId(user.id)
+      //setToken(user.token)
+      //setUserId(user.id)
     }
   }, [])
   const handleLogin = async (event) => {
@@ -50,10 +51,11 @@ const App = () => {
       dispatch(loginUser({ username, password }))
       //setUser(user.username)
 
-      setToken(user.token)
+      //setToken(user.token)
       setUsername('')
       setPassword('')
-      window.localStorage.setItem('loggedInUser', JSON.stringify(user))
+
+      //window.localStorage.setItem('loggedInUser', JSON.stringify(user))
     } catch (exception) {
       dispatch(showNotification('wrong username or password'))
       setNotificationColor('orange')
@@ -69,7 +71,7 @@ const App = () => {
     try {
 
       //blogService.postNew(newPost, token)
-      dispatch(addBlog(newPost, token))
+      dispatch(addBlog(newPost, user.token))
       dispatch(showNotification('Created new blogpost'))
       setTimeout(() => {
         dispatch(hideNotification())
@@ -88,8 +90,7 @@ const App = () => {
 
   const handleDelete = async (id) => {
     if (window.confirm('delete blog?')) {
-      console.log('id to delete: ', id)
-      dispatch(removeBlog(id, token))
+      dispatch(removeBlog(id, user.token))
     }
   }
 
@@ -125,7 +126,7 @@ const App = () => {
         <Notification color={notificationColor} notification={notification} />
         <h2>blogs</h2>
         <h4>
-          {user} logged in
+          {user.username} logged in
           <button
             onClick={() => {
               window.localStorage.removeItem('loggedInUser')
@@ -146,8 +147,8 @@ const App = () => {
               key={blog.id}
               blog={blog}
               handleUpdate={handleUpdate}
-              user={user}
-              userId={userId}
+              user={user.username}
+              userId={user.id}
               deletePost={handleDelete}
             />
           ))}
