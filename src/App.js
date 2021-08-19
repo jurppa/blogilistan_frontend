@@ -1,61 +1,49 @@
 import React, { useState, useEffect, useRef } from 'react'
-import Blog from './components/Blog'
-//import loginService from './services/login'
 import Notification from './components/Notification'
+import Users from './components/Users'
 // Todo refaktoroi komponentteihin
 
+import {
+
+  BrowserRouter as Router,
+  Switch, Route, Link
+} from 'react-router-dom'
+import Blogs from './components/Blogs'
 import NewBlog from './components/NewBlog'
 import Togglable from './components/Togglable'
 import { useDispatch } from 'react-redux'
 import { showNotification, hideNotification } from './reducers/notificationReducer'
 import { useSelector } from 'react-redux'
 import { addBlog, initBlogs, likeBlog, removeBlog } from './reducers/blogReducer'
-import { loginUser } from './reducers/userReducer'
+import { loginUser, logOutUser } from './reducers/userReducer'
 const App = () => {
   const [username, setUsername] = useState('')
+
   const [password, setPassword] = useState('')
-  // const [user, setUser] = useState(null)
-  //const [token, setToken] = useState('')
   const blogFormRef = useRef()
-  //const [userId, setUserId] = useState('')
   const [notificationColor, setNotificationColor] = useState('green')
   const blogs = useSelector(state => state.blogs)
   const notification = useSelector(state => state.notifications)
   const user = useSelector(state => state.users)
-  console.log('user state', user)
 
   const dispatch = useDispatch()
   useEffect(() => {
     dispatch(initBlogs())
   }, [])
   useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem('loggedInUser')
 
-    if (loggedUserJSON) {
-      //const user = JSON.parse(loggedUserJSON)
-
-
-      //setUser(user.username)
-      //setToken(user.token)
-      //setUserId(user.id)
-    }
   }, [])
   const handleLogin = async (event) => {
     event.preventDefault()
 
     try {
-      // const user = await loginService.login({
-      //   username,
-      //   password,
-      // })
       dispatch(loginUser({ username, password }))
-      //setUser(user.username)
 
-      //setToken(user.token)
+
+
       setUsername('')
       setPassword('')
 
-      //window.localStorage.setItem('loggedInUser', JSON.stringify(user))
     } catch (exception) {
       dispatch(showNotification('wrong username or password'))
       setNotificationColor('orange')
@@ -70,7 +58,7 @@ const App = () => {
 
     try {
 
-      //blogService.postNew(newPost, token)
+
       dispatch(addBlog(newPost, user.token))
       dispatch(showNotification('Created new blogpost'))
       setTimeout(() => {
@@ -122,37 +110,44 @@ const App = () => {
     )
   } else {
     return (
-      <div>
+      <Router>
         <Notification color={notificationColor} notification={notification} />
-        <h2>blogs</h2>
-        <h4>
-          {user.username} logged in
-          <button
-            onClick={() => {
-              window.localStorage.removeItem('loggedInUser')
-              //setUser(null)
-            }}
-          >
+        <div>
+          <div>
+            <Link to='/users'>users</Link>
+            <Link to='/'>home</Link>
+          </div>
+          <h4>
+            {user.username} logged in
+            <button
+              onClick={() => {
+                dispatch(logOutUser())
+              }}
+            >
             log out
-          </button>
-        </h4>
-        <h3>create new</h3>
-        <Togglable buttonLabel="create new blog" ref={blogFormRef}>
-          <NewBlog handlePost={handlePost} user={user} />
-        </Togglable>
-        {blogs
-          .sort((a, b) => b.likes - a.likes)
-          .map((blog) => (
-            <Blog
-              key={blog.id}
-              blog={blog}
-              handleUpdate={handleUpdate}
-              user={user.username}
-              userId={user.id}
-              deletePost={handleDelete}
-            />
-          ))}
-      </div>
+            </button>
+          </h4>
+          <Switch>
+
+            <Route path='/users'>
+
+              <Users />
+            </Route>
+            <Route path='/'>
+              <Togglable buttonLabel="create new blog" ref={blogFormRef}>
+                <h3>create new</h3>
+                <NewBlog handlePost={handlePost} user={user} />
+              </Togglable>
+              <Blogs
+                blogs={blogs}
+                userId={user.id}
+                deletePost={handleDelete}
+                handleUpdate={handleUpdate}
+              />
+            </Route>
+          </Switch>
+        </div>
+      </Router>
     )
   }
 }

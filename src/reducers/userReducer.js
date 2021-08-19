@@ -11,14 +11,21 @@ const userReducer = (state = logdin, action) => {
 
     console.log('login data',action.data)
     return action.data
+  case 'LOGOUT':
+    return null
   default:
     return state
   }
 }
-// Todo jatka tästä, pitäisikö tässä tallentaa jo localstorageen?
 export const loginUser =  ({ username, password }) => {
   return  async (dispatch) => {
     const user = await loginService.login({ username, password })
     dispatch( { type:'LOGIN', data: user })
   }}
+
+export const logOutUser =() => {
+  window.localStorage.removeItem('loggedInUser')
+
+  return { type: 'LOGOUT' }
+}
 export default userReducer
