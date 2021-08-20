@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import Notification from './components/Notification'
 import Users from './components/Users'
 // Todo refaktoroi komponentteihin
+import UserInfo from './components/UserInfo'
 
 import {
 
@@ -129,9 +130,12 @@ const App = () => {
           </h4>
           <Switch>
 
-            <Route path='/users'>
-
+            <Route path="/users/">
               <Users />
+
+            </Route>
+            <Route path="/users/:id">
+              <UserInfo />
             </Route>
             <Route path='/'>
               <Togglable buttonLabel="create new blog" ref={blogFormRef}>
@@ -145,6 +149,7 @@ const App = () => {
                 handleUpdate={handleUpdate}
               />
             </Route>
+
           </Switch>
         </div>
       </Router>

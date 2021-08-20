@@ -37,5 +37,9 @@ const removeBlog = (id, token) => {
     .catch((error) => console.log(error))
   return data
 }
+const getUsers = () => {
+  const data = axios.get('/api/users/')
+  return data
+}
 
-export default { getAll, postNew, updateBlog, removeBlog }
+export default { getAll, postNew, updateBlog, removeBlog, getUsers }
