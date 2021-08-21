@@ -6,8 +6,6 @@ const notificationReducer = (state = '', action) => {
   {
 
   case 'SHOW':
-    console.log('ACTION DATA', action.data)
-    console.log('SHOW CASE')
     return action.data
   case 'HIDE':
     return ''
@@ -15,8 +13,8 @@ const notificationReducer = (state = '', action) => {
     return state
   }
 }
+
 export const showNotification = (notification) => {
-  console.log('SHOW NOTIFICATION: ', notification)
   return  {
     type:'SHOW', data:  notification  }
 }

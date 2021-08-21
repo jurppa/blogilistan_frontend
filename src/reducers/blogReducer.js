@@ -29,7 +29,6 @@ export const initBlogs = () => {
 export const addBlog = (blog, token) => {
   return async (dispatch) => {
     const newBlog = await blogService.postNew(blog, token)
-    console.dir('New blog', newBlog)
     dispatch({ type: 'ADD', data: newBlog })
 
   }
@@ -37,10 +36,7 @@ export const addBlog = (blog, token) => {
 }
 export const likeBlog = (blog) => {
   return async (dispatch) => {
-    const status = await blogService.updateBlog(blog)
-    console.log(status)
-    console.log(blog)
-
+    await blogService.updateBlog(blog)
     dispatch({ type: 'LIKE', data: blog })
   }
 }

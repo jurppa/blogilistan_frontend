@@ -11,12 +11,11 @@ const Users = () => {
     dispatch(showAllUsers())
   }, [])
   const users = useSelector(state => state.userInfo)
-  console.log(users)
 
   return(
     <div><table><thead>
       <tr><th>User</th>
-        <th>Blogs created</th></tr></thead>{users.map((a) =>
+        <th>Blogs created</th></tr></thead>{users.sort((a,b) => b.blogs.length - a.blogs.length).map((a) =>
       <User key={a.id} username={a.username} blogsCreated={a.blogs} id={a.id}/>)}</table></div>)
 }
 

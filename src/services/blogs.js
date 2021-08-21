@@ -17,14 +17,7 @@ const postNew = async (newBlog, token) => {
 const updateBlog = async (newBlog) => {
   const data = await axios
     .put(`/api/blogs/${newBlog.id}`, newBlog)
-  console.log('update blog data', data)
   return data.data
-  // return axios
-  //   .put(`/api/blogs/${newBlog.id}`, newBlog)
-  //   .then((response) => response)
-  //   .catch((error) => console.log(error))
-
-
 }
 const removeBlog = (id, token) => {
   const data =  axios

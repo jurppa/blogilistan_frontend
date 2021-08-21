@@ -3,8 +3,8 @@ import React, { useState } from 'react'
 const NewBlog = (props) => {
   const [url, setUrl] = useState('')
   const [title, setTitle] = useState('')
+
   const [author, setAuthor] = useState('')
-  console.log(props.user)
   const makeBlog = (event) => {
     event.preventDefault()
     const blogToAdd = {

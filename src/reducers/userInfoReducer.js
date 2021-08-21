@@ -12,10 +12,9 @@ const userInfoReducer = (state = [], action) => {
 }
 export const showAllUsers = () => {
 
-  console.log('show all users action creator')
   return async (dispatch) => {
+
     const users = await blogService.getUsers()
-    console.log('users', users)
     dispatch({ type:'ALL', data: users })
   }
 }

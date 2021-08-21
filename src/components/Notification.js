@@ -2,8 +2,8 @@ import React from 'react'
 const Notification = ({ color, notification }) => {
 // Store
 
-  console.log('NOTIFICATION STATE', notification)
   const notificationStyle = {
+
     color: color,
 
     fontSize: 27,

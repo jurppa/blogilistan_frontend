@@ -7,16 +7,18 @@ import UserInfo from './components/UserInfo'
 import {
 
   BrowserRouter as Router,
-  Switch, Route, Link
+  Switch, Route
 } from 'react-router-dom'
 import Blogs from './components/Blogs'
+import BlogInfo from './components/BlogInfo'
 import NewBlog from './components/NewBlog'
 import Togglable from './components/Togglable'
 import { useDispatch } from 'react-redux'
 import { showNotification, hideNotification } from './reducers/notificationReducer'
 import { useSelector } from 'react-redux'
 import { addBlog, initBlogs, likeBlog, removeBlog } from './reducers/blogReducer'
-import { loginUser, logOutUser } from './reducers/userReducer'
+import { loginUser } from './reducers/userReducer'
+import Navigation from './components/Navigation'
 const App = () => {
   const [username, setUsername] = useState('')
 
@@ -26,6 +28,7 @@ const App = () => {
   const blogs = useSelector(state => state.blogs)
   const notification = useSelector(state => state.notifications)
   const user = useSelector(state => state.users)
+  const users = useSelector(state => state.userInfo)
 
   const dispatch = useDispatch()
   useEffect(() => {
@@ -74,7 +77,9 @@ const App = () => {
 
     dispatch(likeBlog(updatedPost))
     dispatch(showNotification(`liked blog ${updatedPost.id}`))
-
+    setTimeout(() => {
+      dispatch(hideNotification())
+    }, 5000)
   }
 
   const handleDelete = async (id) => {
@@ -114,29 +119,18 @@ const App = () => {
       <Router>
         <Notification color={notificationColor} notification={notification} />
         <div>
-          <div>
-            <Link to='/users'>users</Link>
-            <Link to='/'>home</Link>
-          </div>
-          <h4>
-            {user.username} logged in
-            <button
-              onClick={() => {
-                dispatch(logOutUser())
-              }}
-            >
-            log out
-            </button>
-          </h4>
+          <Navigation username={ user.username } />
+
           <Switch>
+            <Route path="/users/:id">
+              <UserInfo users={users} />
+            </Route>
 
             <Route path="/users/">
               <Users />
 
             </Route>
-            <Route path="/users/:id">
-              <UserInfo />
-            </Route>
+            <Route path='/blogs/:id'><BlogInfo blogs={blogs} handleUpdate={handleUpdate} /></Route>
             <Route path='/'>
               <Togglable buttonLabel="create new blog" ref={blogFormRef}>
                 <h3>create new</h3>
