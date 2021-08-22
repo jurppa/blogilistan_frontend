@@ -1,3 +1,4 @@
+import { Container, TextField, Button } from '@material-ui/core'
 import React, { useState } from 'react'
 
 const NewBlog = (props) => {
@@ -18,17 +19,17 @@ const NewBlog = (props) => {
   }
 
   return (
-    <div>
-      <form onSubmit={makeBlog}>
-        title <input id='title' onChange={({ target }) => setTitle(target.value)} />
-        <br />
-        author
-        <input id='author' onChange={({ target }) => setAuthor(target.value)} /> <br />
-        url <input id='url' onChange={({ target }) => setUrl(target.value)} /> <br />
-        <button id='createpost' type="submit">create</button>
-      </form>
+    <Container>
+      <div>
+        <form onSubmit={makeBlog}>
+          <TextField label='title' id='title' onChange={({ target }) => setTitle(target.value)} />
+          <TextField label='author' id='author' onChange={({ target }) => setAuthor(target.value)} /> <br />
+          <TextField label='url' id='url' onChange={({ target }) => setUrl(target.value)} /> <br />
+          <Button variant='contained' color='primary' id='createpost' type="submit">create</Button>
+        </form>
 
-    </div>
+      </div>
+    </Container>
   )
 }
 export default NewBlog

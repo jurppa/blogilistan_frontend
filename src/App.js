@@ -16,9 +16,10 @@ import Togglable from './components/Togglable'
 import { useDispatch } from 'react-redux'
 import { showNotification, hideNotification } from './reducers/notificationReducer'
 import { useSelector } from 'react-redux'
-import { addBlog, initBlogs, likeBlog, removeBlog } from './reducers/blogReducer'
+import { addBlog, commentBlog, initBlogs, likeBlog, removeBlog } from './reducers/blogReducer'
 import { loginUser } from './reducers/userReducer'
 import Navigation from './components/Navigation'
+import { Container } from '@material-ui/core'
 const App = () => {
   const [username, setUsername] = useState('')
 
@@ -87,6 +88,9 @@ const App = () => {
       dispatch(removeBlog(id, user.token))
     }
   }
+  const handleComment = async (id, comment) => {
+    dispatch(commentBlog(id, comment))
+  }
 
   if (user === null) {
     return (
@@ -116,37 +120,39 @@ const App = () => {
     )
   } else {
     return (
-      <Router>
-        <Notification color={notificationColor} notification={notification} />
-        <div>
-          <Navigation username={ user.username } />
+      <Container>
+        <Router>
+          <Notification color={notificationColor} notification={notification} />
+          <div>
+            <Navigation username={ user.username } />
 
-          <Switch>
-            <Route path="/users/:id">
-              <UserInfo users={users} />
-            </Route>
+            <Switch>
+              <Route path="/users/:id">
+                <UserInfo users={users} />
+              </Route>
 
-            <Route path="/users/">
-              <Users />
+              <Route path="/users/">
+                <Users />
 
-            </Route>
-            <Route path='/blogs/:id'><BlogInfo blogs={blogs} handleUpdate={handleUpdate} /></Route>
-            <Route path='/'>
-              <Togglable buttonLabel="create new blog" ref={blogFormRef}>
-                <h3>create new</h3>
-                <NewBlog handlePost={handlePost} user={user} />
-              </Togglable>
-              <Blogs
-                blogs={blogs}
-                userId={user.id}
-                deletePost={handleDelete}
-                handleUpdate={handleUpdate}
-              />
-            </Route>
+              </Route>
+              <Route path='/blogs/:id'><BlogInfo blogs={blogs} handleUpdate={handleUpdate} handleComment={handleComment} /></Route>
+              <Route path='/'>
+                <Togglable buttonLabel="create new blog" ref={blogFormRef}>
+                  <h3>create new</h3>
+                  <NewBlog handlePost={handlePost} user={user} />
+                </Togglable>
+                <Blogs
+                  blogs={blogs}
+                  userId={user.id}
+                  deletePost={handleDelete}
+                  handleUpdate={handleUpdate}
+                />
+              </Route>
 
-          </Switch>
-        </div>
-      </Router>
+            </Switch>
+          </div>
+        </Router>
+      </Container>
     )
   }
 }
