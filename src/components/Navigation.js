@@ -2,13 +2,14 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { logOutUser } from '../reducers/userReducer'
+import { AppBar, Toolbar, Button } from '@material-ui/core'
 
 const Navigation = ({ username }) => {
   const dispatch = useDispatch()
   return (
-    <nav><a><Link to='/users'>users</Link></a>
+    <AppBar position='static'><Toolbar variant='dense'><Link to='/users'>users</Link>
 
-      <a><Link to='/'>home</Link></a>{username} <button onClick={() => {dispatch(logOutUser())}}>log out</button></nav>)
+      <Link to='/'>home</Link>{username} <Button onClick={() => {dispatch(logOutUser())}}>log out</Button></Toolbar></AppBar>)
 
 }
 export default Navigation

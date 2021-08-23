@@ -19,7 +19,7 @@ import { useSelector } from 'react-redux'
 import { addBlog, commentBlog, initBlogs, likeBlog, removeBlog } from './reducers/blogReducer'
 import { loginUser } from './reducers/userReducer'
 import Navigation from './components/Navigation'
-import { Container } from '@material-ui/core'
+import { Button, Container, TextField } from '@material-ui/core'
 const App = () => {
   const [username, setUsername] = useState('')
 
@@ -99,7 +99,7 @@ const App = () => {
 
         <div>
           username
-          <input id='username'
+          <TextField id='username'
             type="text"
             value={username}
             name="Username"
@@ -108,14 +108,14 @@ const App = () => {
         </div>
         <div>
           password
-          <input id='password'
+          <TextField id='password'
             type="password"
             value={password}
             name="Password"
             onChange={({ target }) => setPassword(target.value)}
           />
         </div>
-        <button id='loginbutton' type="submit">login</button>
+        <Button id='loginbutton' type="submit">login</Button>
       </form>
     )
   } else {

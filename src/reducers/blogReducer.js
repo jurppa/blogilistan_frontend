@@ -21,7 +21,8 @@ const blogReducer = (state = [], action) => {
   {
     const commentedBlog = state.find(a => a.id === action.data.id)
     commentedBlog.comments.concat(action.data.comment)
-    return state.map(a => a.id === action.data.id ? commentedBlog : a)}
+
+    return state.map((a) => a.id === action.data.id ? commentedBlog : a)}
   default:
     return state
   }

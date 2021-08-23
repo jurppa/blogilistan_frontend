@@ -1,7 +1,9 @@
 import React from 'react'
 import { useParams } from 'react-router'
 import { useState } from 'react'
+import { TextField } from '@material-ui/core'
 const BlogInfo = ({ blogs, handleUpdate, handleComment }) => {
+
   const id = useParams().id
   const [comment, setComment] = useState('')
 
@@ -24,11 +26,11 @@ const BlogInfo = ({ blogs, handleUpdate, handleComment }) => {
   }
   if(!blog) return null
   else {
-    return(<div><h2>{ blog.title }</h2><a href={ blog.url }>{ blog.url }</a><p>{blog.likes} <button onClick={() => {likeBlog(blog)}}>like</button></p><p>added by {blog.user.username}</p>
+    return(<div><h2 style={ { fontSize: '37px' } }>{ blog.title }</h2><a href={ blog.url }>{ blog.url }</a><p>{blog.likes} <button onClick={() => {likeBlog(blog)}}>like</button></p><p style={ { borderRadius: '7px', padding: '10px', color: 'white', fontSize:'27px', backgroundColor: 'teal' } }>added by {blog.user.username}</p>
       <h2>comments</h2>
-      <input onChange={({ target }) => setComment(target.value)}></input><button onClick={() => {commentBlog()}}>comment</button>
+      <TextField onChange={({ target }) => setComment(target.value)}></TextField><button onClick={() => {commentBlog()}}>comment</button>
 
-      <ul>{ blog.comments.map(a => <li key={a.id}>{ a.content }</li> ) } </ul></div>)
+      <ul>{ blog.comments.map(a => <li key={Math.random() * 1000}>{ a.content }</li> ) } </ul></div>)
   }
 }
 export default BlogInfo
